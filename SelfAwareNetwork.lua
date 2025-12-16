@@ -258,5 +258,4 @@ function SelfAwareNetwork:__tostring__()
    str = str .. '}'
    return str
 end
-
 return nn.SelfAwareNetwork

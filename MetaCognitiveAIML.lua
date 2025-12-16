@@ -289,5 +289,4 @@ function MetaCognitiveAIML:introspect()
    
    return intro
 end
-
 return nn.MetaCognitiveAIML

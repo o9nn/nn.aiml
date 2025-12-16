@@ -226,5 +226,4 @@ function NestedMetaCognition:__tostring__()
    str = str .. '}'
    return str
 end
-
 return nn.NestedMetaCognition
