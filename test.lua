@@ -9101,6 +9101,190 @@ function nntest.FeatureLPPooling()
    testJacobian3dBatch()
 end
 
+function nntest.MetaCognitiveLoop()
+   -- Test MetaCognitiveLoop module
+   local inputSize = 10
+   local hiddenSize = 20
+   local batchSize = 5
+   
+   -- Create base network
+   local baseNet = nn.Sequential()
+   baseNet:add(nn.Linear(inputSize, hiddenSize))
+   baseNet:add(nn.Tanh())
+   baseNet:add(nn.Linear(hiddenSize, inputSize))
+   
+   -- Wrap with meta-cognitive capabilities
+   local cognitiveDepth = 2
+   local metaNet = nn.MetaCognitiveLoop(baseNet, cognitiveDepth)
+   
+   -- Test forward pass
+   local input = torch.randn(batchSize, inputSize)
+   local output = metaNet:forward(input)
+   
+   mytester:asserteq(output:size(1), batchSize, 'output batch size mismatch')
+   mytester:asserteq(output:size(2), inputSize, 'output dimension mismatch')
+   
+   -- Test backward pass
+   local gradOutput = torch.randn(output:size())
+   local gradInput = metaNet:backward(input, gradOutput)
+   
+   mytester:asserteq(gradInput:size(1), batchSize, 'gradInput batch size mismatch')
+   mytester:asserteq(gradInput:size(2), inputSize, 'gradInput dimension mismatch')
+   
+   -- Test meta-cognitive state
+   local state = metaNet:getMetaCognitiveState()
+   mytester:assert(state.processingSteps > 0, 'processing steps not tracked')
+   mytester:assert(state.confidenceLevel > 0, 'confidence level not computed')
+   
+   -- Test awareness layers
+   local awarenessLayers = metaNet:getAwarenessLayers()
+   mytester:asserteq(#awarenessLayers, cognitiveDepth, 'awareness layers count mismatch')
+   
+   -- Test tostring
+   local str = tostring(metaNet)
+   mytester:assert(str:find('MetaCognitiveLoop') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.NestedMetaCognition()
+   -- Test NestedMetaCognition module
+   local inputSize = 10
+   local batchSize = 3
+   local nestingDepth = 3
+   
+   -- Create base network
+   local baseNet = nn.Linear(inputSize, inputSize)
+   
+   -- Create nested meta-cognitive architecture
+   local nestedNet = nn.NestedMetaCognition(baseNet, nestingDepth)
+   
+   -- Test forward pass
+   local input = torch.randn(batchSize, inputSize)
+   local output = nestedNet:forward(input)
+   
+   mytester:asserteq(output:size(1), batchSize, 'output batch size mismatch')
+   mytester:asserteq(output:size(2), inputSize, 'output dimension mismatch')
+   
+   -- Test backward pass
+   local gradOutput = torch.randn(output:size())
+   local gradInput = nestedNet:backward(input, gradOutput)
+   
+   mytester:asserteq(gradInput:size(1), batchSize, 'gradInput batch size mismatch')
+   mytester:asserteq(gradInput:size(2), inputSize, 'gradInput dimension mismatch')
+   
+   -- Test cognitive hierarchy
+   local hierarchy = nestedNet:getCognitiveHierarchy()
+   mytester:asserteq(#hierarchy, nestingDepth, 'hierarchy depth mismatch')
+   
+   -- Test global meta state
+   local metaState = nestedNet:getGlobalMetaState()
+   mytester:assert(metaState.totalProcessingSteps > 0, 'processing steps not tracked')
+   mytester:asserteq(metaState.awarenessDepth, nestingDepth, 'awareness depth mismatch')
+   
+   -- Test introspection
+   local intro = nestedNet:introspect()
+   mytester:asserteq(intro.nestingDepth, nestingDepth, 'introspection depth mismatch')
+   mytester:assert(intro.totalSteps > 0, 'total steps not tracked')
+   
+   -- Test tostring
+   local str = tostring(nestedNet)
+   mytester:assert(str:find('NestedMetaCognition') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.SelfAwareNetwork()
+   -- Test SelfAwareNetwork module
+   local inputSize = 10
+   local batchSize = 4
+   
+   -- Create base network
+   local baseNet = nn.Sequential()
+   baseNet:add(nn.Linear(inputSize, 20))
+   baseNet:add(nn.ReLU())
+   baseNet:add(nn.Linear(20, inputSize))
+   
+   -- Make it self-aware with AIML enabled
+   local selfAware = nn.SelfAwareNetwork(baseNet, true)
+   
+   -- Test forward pass
+   local input = torch.randn(batchSize, inputSize)
+   local output = selfAware:forward(input)
+   
+   mytester:asserteq(output:size(1), batchSize, 'output batch size mismatch')
+   mytester:asserteq(output:size(2), inputSize, 'output dimension mismatch')
+   
+   -- Test backward pass
+   local gradOutput = torch.randn(output:size())
+   local gradInput = selfAware:backward(input, gradOutput)
+   
+   mytester:asserteq(gradInput:size(1), batchSize, 'gradInput batch size mismatch')
+   mytester:asserteq(gradInput:size(2), inputSize, 'gradInput dimension mismatch')
+   
+   -- Test self-awareness state
+   local awareness = selfAware:getSelfAwareness()
+   mytester:assert(awareness.performanceMetrics.forwardPasses > 0, 'forward passes not tracked')
+   mytester:assert(awareness.performanceMetrics.backwardPasses > 0, 'backward passes not tracked')
+   
+   -- Test introspection
+   local intro = selfAware:introspect()
+   mytester:assert(intro.forwardPasses > 0, 'introspection forward passes')
+   mytester:assert(intro.backwardPasses > 0, 'introspection backward passes')
+   
+   -- Test AIML interface
+   mytester:assert(selfAware.enableAIML, 'AIML should be enabled')
+   local aiml = selfAware:getAIML()
+   mytester:assert(aiml ~= nil, 'AIML interface should exist')
+   
+   -- Test conversational interface
+   local response = selfAware:converse("HELLO", input)
+   mytester:assert(type(response) == "string", 'response should be a string')
+   mytester:assert(#response > 0, 'response should not be empty')
+   
+   -- Test tostring
+   local str = tostring(selfAware)
+   mytester:assert(str:find('SelfAwareNetwork') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.MetaCognitiveAIML()
+   -- Test MetaCognitiveAIML module
+   local network = nn.Linear(10, 10)
+   local aiml = nn.MetaCognitiveAIML(network)
+   
+   -- Test basic pattern matching
+   local response = aiml:processInput("HELLO", nil)
+   mytester:assert(type(response) == "string", 'response should be a string')
+   mytester:assert(#response > 0, 'response should not be empty')
+   
+   -- Test confidence query
+   response = aiml:processInput("WHAT IS YOUR CONFIDENCE", nil)
+   mytester:assert(response:find("confidence") ~= nil, 'response should mention confidence')
+   
+   -- Test meta-cognitive query
+   response = aiml:processInput("WHAT IS META-COGNITION", nil)
+   mytester:assert(response:find("cognition") ~= nil or response:find("thinking") ~= nil, 
+                   'response should explain meta-cognition')
+   
+   -- Test conversation history
+   local history = aiml:getConversationHistory()
+   mytester:assert(#history > 0, 'conversation history should be populated')
+   
+   -- Test context management
+   aiml:setContext("test_key", "test_value")
+   local value = aiml:getContext("test_key")
+   mytester:asserteq(value, "test_value", 'context should be stored and retrieved')
+   
+   -- Test introspection
+   local intro = aiml:introspect()
+   mytester:assert(intro.patternCount > 0, 'should have patterns')
+   mytester:assert(intro.conversationCount > 0, 'should have conversations')
+   
+   -- Test custom pattern
+   aiml:addPattern({
+      pattern = "TEST PATTERN",
+      template = "Test response"
+   })
+   response = aiml:processInput("TEST PATTERN", nil)
+   mytester:asserteq(response, "Test response", 'custom pattern should work')
+end
+
 mytester:add(nntest)
 
 jac = nn.Jacobian
