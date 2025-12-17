@@ -23,6 +23,12 @@ require('nn.DontCast')
 require('nn.NaN')
 require('nn.Profile')
 
+-- Meta-Cognitive and AIML Integration Modules
+require('nn.MetaCognitiveLoop')
+require('nn.NestedMetaCognition')
+require('nn.SelfAwareNetwork')
+require('nn.MetaCognitiveAIML')
+
 require('nn.Linear')
 require('nn.LinearWeightNorm')
 require('nn.Bilinear')

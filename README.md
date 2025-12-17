@@ -14,8 +14,47 @@ This package provides an easy and modular way to build and train simple or compl
    * [Criterions](doc/criterion.md#nn.Criterions): a list of all criterions, including [`Criterion`](doc/criterion.md#nn.Criterion), the abstract class;
    * [`MSECriterion`](doc/criterion.md#nn.MSECriterion): the Mean Squared Error criterion used for regression;
    * [`ClassNLLCriterion`](doc/criterion.md#nn.ClassNLLCriterion): the Negative Log Likelihood criterion used for classification;
+ * **Meta-Cognitive and AIML Integration** (NEW):
+   * [NN.AIML Documentation](doc/metacognitive_aiml.md): Complete guide to meta-cognitive neural networks with AIML integration
+   * [`MetaCognitiveLoop`](doc/metacognitive_aiml.md#metacognitiveloop): Neural networks that monitor their own learning
+   * [`NestedMetaCognition`](doc/metacognitive_aiml.md#nestedmetacognition): Hierarchical meta-cognitive processing (learning about learning, reasoning about reasoning)
+   * [`SelfAwareNetwork`](doc/metacognitive_aiml.md#selfawarenetwork): Self-monitoring neural networks with AIML conversational interface
+   * [`MetaCognitiveAIML`](doc/metacognitive_aiml.md#metacognitiveaiml): AIML pattern-based conversational AI with neural awareness
  * Additional documentation:
    * [Overview](doc/overview.md#nn.overview.dok) of the package essentials including modules, containers and training;
    * [Training](doc/training.md#nn.traningneuralnet.dok): how to train a neural network using [`StochasticGradient`](doc/training.md#nn.StochasticGradient);
    * [Testing](doc/testing.md): how to test your modules.
    * [Experimental Modules](https://github.com/clementfarabet/lua---nnx/blob/master/README.md): a package containing experimental modules and criteria.
+
+## Quick Start with NN.AIML Meta-Cognitive Bot-Net
+
+```lua
+require 'nn'
+
+-- Create a base neural network
+local baseNet = nn.Sequential()
+   :add(nn.Linear(10, 20))
+   :add(nn.Tanh())
+   :add(nn.Linear(20, 10))
+
+-- Add nested meta-cognitive loops (3 levels: cognition, meta-cognition, meta-meta-cognition)
+local metaCognitiveNet = nn.NestedMetaCognition(baseNet, 3)
+
+-- Make it self-aware with AIML conversational interface
+local selfAwareNet = nn.SelfAwareNetwork(metaCognitiveNet, true)
+
+-- Use like any neural network
+local input = torch.randn(5, 10)
+local output = selfAwareNet:forward(input)
+
+-- Converse with the neural network!
+local response = selfAwareNet:converse("HOW ARE YOU", input)
+print(response) -- "I'm functioning well! My cognitive confidence is high at 0.95."
+
+-- Introspect its cognitive state
+local intro = selfAwareNet:introspect()
+print("Learning stability: " .. intro.learningDynamics.stability)
+print("Current state: " .. intro.recentReflections[1].state)
+```
+
+See [examples/metacognitive_botnet.lua](examples/metacognitive_botnet.lua) for a complete demonstration.
