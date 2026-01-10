@@ -28,6 +28,8 @@ require('nn.MetaCognitiveLoop')
 require('nn.NestedMetaCognition')
 require('nn.SelfAwareNetwork')
 require('nn.MetaCognitiveAIML')
+require('nn.AdvancedAIMLPatterns')
+require('nn.MetaCognitiveBenchmark')
 
 require('nn.Linear')
 require('nn.LinearWeightNorm')
