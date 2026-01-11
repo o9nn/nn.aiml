@@ -31,6 +31,8 @@ require('nn.MetaCognitiveAIML')
 require('nn.AdvancedAIMLPatterns')
 require('nn.MetaCognitiveBenchmark')
 require('nn.CognitiveVisualizer')
+require('nn.TensorLogic')
+require('nn.TensorLogicReasoner')
 
 require('nn.Linear')
 require('nn.LinearWeightNorm')

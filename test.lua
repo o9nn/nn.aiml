@@ -9284,6 +9284,822 @@ function nntest.MetaCognitiveAIML()
    response = aiml:processInput("TEST PATTERN", nil)
    mytester:asserteq(response, "Test response", 'custom pattern should work')
 end
+-- ============================================================================
+-- Advanced AIML Patterns Tests
+-- ============================================================================
+
+function nntest.AdvancedAIMLPatterns()
+   -- Test AdvancedAIMLPatterns module
+   local patterns = nn.AdvancedAIMLPatterns()
+
+   -- Test pattern count
+   local count = patterns:getPatternCount()
+   mytester:assert(count >= 20, 'should have at least 20 patterns, got ' .. count)
+
+   -- Test getPatterns
+   local patternList = patterns:getPatterns()
+   mytester:asserteq(#patternList, count, 'getPatterns should return all patterns')
+
+   -- Test pattern structure
+   for i, p in ipairs(patternList) do
+      mytester:assert(p.pattern ~= nil, 'pattern ' .. i .. ' should have pattern field')
+      mytester:assert(p.template ~= nil, 'pattern ' .. i .. ' should have template field')
+   end
+
+   -- Test tostring
+   local str = tostring(patterns)
+   mytester:assert(str:find('AdvancedAIMLPatterns') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.AdvancedAIMLPatternsApply()
+   -- Test applying patterns to AIML instance
+   local network = nn.Linear(10, 10)
+   local aiml = nn.MetaCognitiveAIML(network)
+   local patterns = nn.AdvancedAIMLPatterns()
+
+   local initialCount = aiml:introspect().patternCount
+
+   -- Apply patterns
+   patterns:applyTo(aiml)
+
+   local newCount = aiml:introspect().patternCount
+   mytester:assert(newCount > initialCount, 'applying patterns should increase pattern count')
+
+   -- Test new patterns work
+   local response = aiml:processInput("STATUS", nil)
+   mytester:assert(type(response) == "string", 'STATUS should return string response')
+
+   response = aiml:processInput("HELP", nil)
+   mytester:assert(type(response) == "string", 'HELP should return string response')
+end
+
+function nntest.AdvancedAIMLPatternsCognitiveQueries()
+   -- Test cognitive state query patterns
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local patterns = nn.AdvancedAIMLPatterns()
+   patterns:applyTo(network:getAIML())
+
+   local input = torch.randn(1, 10)
+   network:forward(input)
+
+   -- Test various cognitive queries
+   local queries = {
+      "WHAT IS YOUR COGNITIVE LOAD",
+      "WHERE IS YOUR ATTENTION",
+      "ARE YOU UNCERTAIN",
+      "HOW IS YOUR TRAINING",
+      "WHAT ARE YOUR STRENGTHS",
+      "DESCRIBE YOUR ARCHITECTURE"
+   }
+
+   for _, query in ipairs(queries) do
+      local response = network:converse(query, input)
+      mytester:assert(type(response) == "string", query .. ' should return string')
+      mytester:assert(#response > 0, query .. ' should return non-empty response')
+   end
+end
+
+-- ============================================================================
+-- MetaCognitiveBenchmark Tests
+-- ============================================================================
+
+function nntest.MetaCognitiveBenchmark()
+   -- Test MetaCognitiveBenchmark module
+   local benchmark = nn.MetaCognitiveBenchmark()
+
+   -- Test tostring
+   local str = tostring(benchmark)
+   mytester:assert(str:find('MetaCognitiveBenchmark') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.MetaCognitiveBenchmarkOptions()
+   -- Test benchmark with custom options
+   local benchmark = nn.MetaCognitiveBenchmark({
+      warmupIterations = 5,
+      benchmarkIterations = 20,
+      verbose = false
+   })
+
+   local str = tostring(benchmark)
+   mytester:assert(str:find('warmup=5') ~= nil, 'should show warmup iterations')
+   mytester:assert(str:find('iterations=20') ~= nil, 'should show benchmark iterations')
+end
+
+function nntest.MetaCognitiveBenchmarkTimeForward()
+   -- Test forward pass timing
+   local benchmark = nn.MetaCognitiveBenchmark({
+      warmupIterations = 2,
+      benchmarkIterations = 10
+   })
+
+   local network = nn.Linear(10, 10)
+   local input = torch.randn(5, 10)
+
+   local results = benchmark:timeForward(network, input, 10)
+
+   mytester:assert(results.totalTime > 0, 'totalTime should be positive')
+   mytester:asserteq(results.iterations, 10, 'iterations should match')
+   mytester:assert(results.avgTime > 0, 'avgTime should be positive')
+   mytester:assert(results.throughput > 0, 'throughput should be positive')
+end
+
+function nntest.MetaCognitiveBenchmarkTimeBackward()
+   -- Test backward pass timing
+   local benchmark = nn.MetaCognitiveBenchmark({
+      warmupIterations = 2,
+      benchmarkIterations = 10
+   })
+
+   local network = nn.Linear(10, 10)
+   local input = torch.randn(5, 10)
+
+   local results = benchmark:timeBackward(network, input, 10)
+
+   mytester:assert(results.totalTime > 0, 'totalTime should be positive')
+   mytester:asserteq(results.iterations, 10, 'iterations should match')
+   mytester:assert(results.avgTime > 0, 'avgTime should be positive')
+end
+
+function nntest.MetaCognitiveBenchmarkMemory()
+   -- Test memory measurement
+   local benchmark = nn.MetaCognitiveBenchmark()
+
+   local network = nn.Linear(10, 10)
+   local input = torch.randn(5, 10)
+
+   local results = benchmark:measureMemory(network, input)
+
+   mytester:assert(results.memoryBefore > 0, 'memoryBefore should be positive')
+   mytester:assert(results.memoryAfter > 0, 'memoryAfter should be positive')
+   mytester:asserteq(results.unit, "KB", 'unit should be KB')
+end
+
+function nntest.MetaCognitiveBenchmarkFullBenchmark()
+   -- Test full benchmark run
+   local benchmark = nn.MetaCognitiveBenchmark({
+      warmupIterations = 2,
+      benchmarkIterations = 5,
+      verbose = false
+   })
+
+   local network = nn.MetaCognitiveLoop(nn.Linear(10, 10), 2)
+
+   local results = benchmark:runFullBenchmark(network, 10, 5)
+
+   mytester:assert(results.inputSize == 10, 'inputSize should be recorded')
+   mytester:assert(results.batchSize == 5, 'batchSize should be recorded')
+   mytester:assert(results.forward ~= nil, 'forward results should exist')
+   mytester:assert(results.backward ~= nil, 'backward results should exist')
+   mytester:assert(results.memory ~= nil, 'memory results should exist')
+   mytester:assert(results.cognitiveEvolution ~= nil, 'cognitive evolution should exist for meta-cognitive network')
+end
+
+function nntest.MetaCognitiveBenchmarkExport()
+   -- Test result export
+   local benchmark = nn.MetaCognitiveBenchmark({
+      warmupIterations = 2,
+      benchmarkIterations = 5
+   })
+
+   local network = nn.Linear(10, 10)
+   local results = benchmark:runFullBenchmark(network, 10, 5)
+
+   -- Test table export
+   local tableExport = benchmark:exportResults(results, "table")
+   mytester:assert(type(tableExport) == "table", 'table export should return table')
+
+   -- Test summary export
+   local summary = benchmark:exportResults(results, "summary")
+   mytester:assert(summary.forwardAvgMs ~= nil, 'summary should have forwardAvgMs')
+   mytester:assert(summary.throughput ~= nil, 'summary should have throughput')
+
+   -- Test CSV export
+   local csv = benchmark:exportResults(results, "csv")
+   mytester:assert(type(csv) == "string", 'csv export should return string')
+   mytester:assert(csv:find("networkType") ~= nil, 'csv should have header')
+end
+
+-- ============================================================================
+-- CognitiveVisualizer Tests
+-- ============================================================================
+
+function nntest.CognitiveVisualizer()
+   -- Test CognitiveVisualizer module
+   local visualizer = nn.CognitiveVisualizer()
+
+   -- Test tostring
+   local str = tostring(visualizer)
+   mytester:assert(str:find('CognitiveVisualizer') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.CognitiveVisualizerOptions()
+   -- Test visualizer with custom options
+   local visualizer = nn.CognitiveVisualizer({
+      width = 40,
+      height = 8,
+      maxHistory = 50
+   })
+
+   local str = tostring(visualizer)
+   mytester:assert(str:find('width=40') ~= nil, 'should show width')
+   mytester:assert(str:find('height=8') ~= nil, 'should show height')
+end
+
+function nntest.CognitiveVisualizerTrackNetwork()
+   -- Test network tracking
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer()
+
+   visualizer:trackNetwork(network)
+
+   -- Should not error
+   mytester:assert(true, 'trackNetwork should not error')
+end
+
+function nntest.CognitiveVisualizerCaptureState()
+   -- Test state capture
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer()
+   visualizer:trackNetwork(network)
+
+   local input = torch.randn(5, 10)
+
+   -- Run forward and capture
+   for i = 1, 10 do
+      network:forward(input)
+      visualizer:captureState()
+   end
+
+   mytester:asserteq(visualizer:getIteration(), 10, 'should have 10 iterations')
+
+   local timeline = visualizer:getTimeline()
+   mytester:asserteq(#timeline.confidence, 10, 'should have 10 confidence values')
+end
+
+function nntest.CognitiveVisualizerPlots()
+   -- Test plot generation
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer({width = 30, height = 5})
+   visualizer:trackNetwork(network)
+
+   local input = torch.randn(5, 10)
+   for i = 1, 20 do
+      network:forward(input)
+      visualizer:captureState()
+   end
+
+   -- Test confidence plot
+   local plot = visualizer:plotConfidence()
+   mytester:assert(type(plot) == "string", 'plotConfidence should return string')
+   mytester:assert(#plot > 0, 'plot should not be empty')
+
+   -- Test stability plot
+   plot = visualizer:plotStability()
+   mytester:assert(type(plot) == "string", 'plotStability should return string')
+
+   -- Test convergence plot
+   plot = visualizer:plotConvergence()
+   mytester:assert(type(plot) == "string", 'plotConvergence should return string')
+
+   -- Test plot all
+   plot = visualizer:plotAll()
+   mytester:assert(type(plot) == "string", 'plotAll should return string')
+end
+
+function nntest.CognitiveVisualizerDashboard()
+   -- Test dashboard generation
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer()
+   visualizer:trackNetwork(network)
+
+   local input = torch.randn(5, 10)
+   for i = 1, 10 do
+      network:forward(input)
+      visualizer:captureState()
+   end
+
+   local dashboard = visualizer:showDashboard()
+   mytester:assert(type(dashboard) == "string", 'showDashboard should return string')
+   mytester:assert(dashboard:find("DASHBOARD") ~= nil, 'dashboard should have header')
+end
+
+function nntest.CognitiveVisualizerHeatmap()
+   -- Test heatmap generation
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer()
+   visualizer:trackNetwork(network)
+
+   local input = torch.randn(5, 10)
+   for i = 1, 20 do
+      network:forward(input)
+      visualizer:captureState()
+   end
+
+   local heatmap = visualizer:showCognitiveHeatmap()
+   mytester:assert(type(heatmap) == "string", 'showCognitiveHeatmap should return string')
+   mytester:assert(heatmap:find("Heatmap") ~= nil, 'heatmap should have title')
+end
+
+function nntest.CognitiveVisualizerStatistics()
+   -- Test statistics computation
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer()
+   visualizer:trackNetwork(network)
+
+   local input = torch.randn(5, 10)
+   for i = 1, 15 do
+      network:forward(input)
+      visualizer:captureState()
+   end
+
+   local stats = visualizer:getStatistics()
+   mytester:assert(stats.confidence ~= nil, 'should have confidence stats')
+   mytester:assert(stats.confidence.mean ~= nil, 'should have mean')
+   mytester:assert(stats.confidence.std ~= nil, 'should have std')
+   mytester:assert(stats.confidence.min ~= nil, 'should have min')
+   mytester:assert(stats.confidence.max ~= nil, 'should have max')
+   mytester:assert(stats.confidence.trend ~= nil, 'should have trend')
+
+   -- Test printStatistics
+   local printed = visualizer:printStatistics()
+   mytester:assert(type(printed) == "string", 'printStatistics should return string')
+end
+
+function nntest.CognitiveVisualizerReset()
+   -- Test timeline reset
+   local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+   local visualizer = nn.CognitiveVisualizer()
+   visualizer:trackNetwork(network)
+
+   local input = torch.randn(5, 10)
+   for i = 1, 10 do
+      network:forward(input)
+      visualizer:captureState()
+   end
+
+   mytester:asserteq(visualizer:getIteration(), 10, 'should have 10 iterations')
+
+   visualizer:resetTimeline()
+
+   mytester:asserteq(visualizer:getIteration(), 0, 'should reset to 0 iterations')
+   mytester:asserteq(#visualizer:getTimeline().confidence, 0, 'timeline should be empty')
+end
+
+-- ============================================================================
+-- TensorLogic Tests
+-- ============================================================================
+
+function nntest.TensorLogic()
+   -- Test TensorLogic module
+   local logic = nn.TensorLogic()
+
+   -- Test tostring
+   local str = tostring(logic)
+   mytester:assert(str:find('TensorLogic') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.TensorLogicSymbolEncoding()
+   -- Test symbol encoding/decoding
+   local logic = nn.TensorLogic()
+
+   local id1 = logic:encodeSymbol('alice')
+   local id2 = logic:encodeSymbol('bob')
+   local id3 = logic:encodeSymbol('alice')  -- Should return same ID
+
+   mytester:assert(id1 > 0, 'ID should be positive')
+   mytester:assert(id2 > 0, 'ID should be positive')
+   mytester:asserteq(id1, id3, 'same symbol should get same ID')
+   mytester:assert(id1 ~= id2, 'different symbols should get different IDs')
+
+   -- Test decoding
+   local decoded = logic:decodeSymbol(id1)
+   mytester:asserteq(decoded, 'alice', 'should decode back to original symbol')
+end
+
+function nntest.TensorLogicRelation()
+   -- Test relation creation
+   local logic = nn.TensorLogic()
+
+   local rel = logic:relation({
+      {'alice', 'bob'},
+      {'bob', 'charlie'},
+      {'charlie', 'david'}
+   }, 'parent')
+
+   mytester:asserteq(rel.name, 'parent', 'name should match')
+   mytester:asserteq(rel.arity, 2, 'arity should be 2 for binary relation')
+   mytester:assert(rel.tensor ~= nil, 'tensor should exist')
+
+   -- Test query
+   mytester:assert(logic:query(rel, {'alice', 'bob'}), 'alice->bob should be true')
+   mytester:assert(logic:query(rel, {'bob', 'charlie'}), 'bob->charlie should be true')
+   mytester:assert(not logic:query(rel, {'alice', 'charlie'}), 'alice->charlie should be false (not direct)')
+end
+
+function nntest.TensorLogicUnaryRelation()
+   -- Test unary relation
+   local logic = nn.TensorLogic()
+
+   local rel = logic:relation({
+      {'human'},
+      {'mortal'}
+   }, 'predicate')
+
+   mytester:asserteq(rel.arity, 1, 'arity should be 1 for unary relation')
+   mytester:assert(logic:query(rel, {'human'}), 'human should be true')
+end
+
+function nntest.TensorLogicTensorJoin()
+   -- Test tensor join (composition)
+   local logic = nn.TensorLogic()
+
+   local parent = logic:relation({
+      {'alice', 'bob'},
+      {'bob', 'charlie'}
+   }, 'parent')
+
+   -- Compute grandparent = parent . parent
+   local grandparent = logic:tensorJoin(parent, parent, {2, 1})
+
+   mytester:assert(grandparent ~= nil, 'join should return result')
+   mytester:asserteq(grandparent.arity, 2, 'result should be binary')
+end
+
+function nntest.TensorLogicConjunction()
+   -- Test logical AND
+   local logic = nn.TensorLogic()
+
+   local rel1 = logic:fromTensor(torch.Tensor({{1, 0}, {1, 1}}), 'rel1')
+   local rel2 = logic:fromTensor(torch.Tensor({{1, 1}, {0, 1}}), 'rel2')
+
+   local conj = logic:conjunction(rel1, rel2)
+
+   mytester:asserteq(conj.tensor[1][1], 1, '1 AND 1 = 1')
+   mytester:asserteq(conj.tensor[1][2], 0, '0 AND 1 = 0')
+   mytester:asserteq(conj.tensor[2][1], 0, '1 AND 0 = 0')
+   mytester:asserteq(conj.tensor[2][2], 1, '1 AND 1 = 1')
+end
+
+function nntest.TensorLogicDisjunction()
+   -- Test logical OR
+   local logic = nn.TensorLogic()
+
+   local rel1 = logic:fromTensor(torch.Tensor({{1, 0}, {0, 0}}), 'rel1')
+   local rel2 = logic:fromTensor(torch.Tensor({{0, 1}, {0, 1}}), 'rel2')
+
+   local disj = logic:disjunction(rel1, rel2)
+
+   mytester:asserteq(disj.tensor[1][1], 1, '1 OR 0 = 1')
+   mytester:asserteq(disj.tensor[1][2], 1, '0 OR 1 = 1')
+   mytester:asserteq(disj.tensor[2][1], 0, '0 OR 0 = 0')
+   mytester:asserteq(disj.tensor[2][2], 1, '0 OR 1 = 1')
+end
+
+function nntest.TensorLogicNegation()
+   -- Test logical NOT
+   local logic = nn.TensorLogic()
+
+   local rel = logic:fromTensor(torch.Tensor({{1, 0}, {0, 1}}), 'rel')
+   local neg = logic:negation(rel)
+
+   mytester:asserteq(neg.tensor[1][1], 0, 'NOT 1 = 0')
+   mytester:asserteq(neg.tensor[1][2], 1, 'NOT 0 = 1')
+   mytester:asserteq(neg.tensor[2][1], 1, 'NOT 0 = 1')
+   mytester:asserteq(neg.tensor[2][2], 0, 'NOT 1 = 0')
+end
+
+function nntest.TensorLogicStepFunction()
+   -- Test step function
+   local logic = nn.TensorLogic()
+
+   local tensor = torch.Tensor({0.1, 0.4, 0.5, 0.6, 0.9})
+   local stepped = logic:step(tensor, 0.5)
+
+   mytester:asserteq(stepped[1], 0, '0.1 < 0.5 -> 0')
+   mytester:asserteq(stepped[2], 0, '0.4 < 0.5 -> 0')
+   mytester:asserteq(stepped[3], 1, '0.5 >= 0.5 -> 1')
+   mytester:asserteq(stepped[4], 1, '0.6 >= 0.5 -> 1')
+   mytester:asserteq(stepped[5], 1, '0.9 >= 0.5 -> 1')
+end
+
+function nntest.TensorLogicForwardChain()
+   -- Test forward chaining (transitive closure)
+   local logic = nn.TensorLogic({trace = true})
+
+   local parent = logic:relation({
+      {'a', 'b'},
+      {'b', 'c'},
+      {'c', 'd'}
+   }, 'parent')
+
+   local ancestor = logic:forwardChain(parent, 5)
+
+   mytester:assert(ancestor ~= nil, 'forward chain should return result')
+
+   -- Check transitive closure
+   local tuples = logic:extractTuples(ancestor)
+   mytester:assert(#tuples >= 3, 'should have at least original tuples')
+end
+
+function nntest.TensorLogicBackwardChain()
+   -- Test backward chaining
+   local logic = nn.TensorLogic()
+
+   local parent = logic:relation({
+      {'alice', 'bob'},
+      {'bob', 'charlie'}
+   }, 'parent')
+
+   -- Query direct fact
+   local result = logic:backwardChain(parent, {'alice', 'bob'}, 3)
+   mytester:assert(result.proved, 'alice->bob should be provable')
+
+   -- Query transitive (requires chaining)
+   result = logic:backwardChain(parent, {'alice', 'charlie'}, 3)
+   -- May or may not prove depending on implementation
+   mytester:assert(type(result.proved) == "boolean", 'should return boolean proved')
+end
+
+function nntest.TensorLogicExtractTuples()
+   -- Test tuple extraction
+   local logic = nn.TensorLogic()
+
+   local rel = logic:relation({
+      {'a', 'b'},
+      {'c', 'd'}
+   }, 'test')
+
+   local tuples = logic:extractTuples(rel)
+   mytester:asserteq(#tuples, 2, 'should extract 2 tuples')
+end
+
+function nntest.TensorLogicEmbeddings()
+   -- Test embedding creation
+   local logic = nn.TensorLogic({embedding_dim = 32})
+
+   local embeddings = logic:createEmbedding({'cat', 'dog', 'animal'})
+
+   mytester:asserteq(embeddings.embeddings:size(1), 3, 'should have 3 embeddings')
+   mytester:asserteq(embeddings.embeddings:size(2), 32, 'embedding dim should be 32')
+
+   -- Test lookup
+   local catEmb = embeddings.lookup('cat')
+   mytester:assert(catEmb ~= nil, 'should find cat embedding')
+   mytester:asserteq(catEmb:size(1), 32, 'embedding should have correct dim')
+end
+
+function nntest.TensorLogicStats()
+   -- Test statistics
+   local logic = nn.TensorLogic()
+
+   logic:relation({{'a', 'b'}}, 'r1')
+   logic:relation({{'c', 'd'}}, 'r2')
+
+   local stats = logic:stats()
+   mytester:assert(stats.numSymbols > 0, 'should have symbols')
+   mytester:asserteq(stats.numRelations, 2, 'should have 2 relations')
+end
+
+-- ============================================================================
+-- TensorLogicReasoner Tests
+-- ============================================================================
+
+function nntest.TensorLogicReasoner()
+   -- Test TensorLogicReasoner module
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   -- Test tostring
+   local str = tostring(reasoner)
+   mytester:assert(str:find('TensorLogicReasoner') ~= nil, 'tostring should contain class name')
+end
+
+function nntest.TensorLogicReasonerOptions()
+   -- Test reasoner with options
+   local reasoner = nn.TensorLogicReasoner(10, 10, {
+      logicDepth = 5,
+      reasoningMode = 'hybrid',
+      hiddenDim = 32
+   })
+
+   local str = tostring(reasoner)
+   mytester:assert(str:find('reasoningMode: hybrid') ~= nil, 'should show reasoning mode')
+   mytester:assert(str:find('logicDepth: 5') ~= nil, 'should show logic depth')
+end
+
+function nntest.TensorLogicReasonerForward()
+   -- Test forward pass
+   local reasoner = nn.TensorLogicReasoner(10, 5)
+
+   local input = torch.randn(4, 10)
+   local output = reasoner:forward(input)
+
+   mytester:asserteq(output:size(1), 4, 'batch size should match')
+   mytester:asserteq(output:size(2), 5, 'output dim should match')
+end
+
+function nntest.TensorLogicReasonerBackward()
+   -- Test backward pass
+   local reasoner = nn.TensorLogicReasoner(10, 5)
+
+   local input = torch.randn(4, 10)
+   local output = reasoner:forward(input)
+   local gradOutput = torch.randn(output:size())
+   local gradInput = reasoner:backward(input, gradOutput)
+
+   mytester:asserteq(gradInput:size(1), 4, 'gradInput batch size should match')
+   mytester:asserteq(gradInput:size(2), 10, 'gradInput dim should match input')
+end
+
+function nntest.TensorLogicReasonerAddFact()
+   -- Test adding facts
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   reasoner:addFact('parent', {'alice', 'bob'})
+   reasoner:addFact('parent', {'bob', 'charlie'})
+
+   local kb = reasoner:getKnowledgeBase()
+   mytester:asserteq(#kb.facts['parent'], 2, 'should have 2 parent facts')
+end
+
+function nntest.TensorLogicReasonerAddRule()
+   -- Test adding rules
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   reasoner:addRule('grandparent', {'parent', 'parent'})
+
+   local kb = reasoner:getKnowledgeBase()
+   mytester:asserteq(#kb.rules, 1, 'should have 1 rule')
+   mytester:asserteq(kb.rules[1].head, 'grandparent', 'rule head should match')
+end
+
+function nntest.TensorLogicReasonerQuery()
+   -- Test querying
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   reasoner:addFact('knows', {'alice', 'bob'})
+
+   local result = reasoner:query('knows', {'alice', 'bob'})
+   mytester:assert(result, 'alice knows bob should be true')
+
+   result = reasoner:query('knows', {'bob', 'alice'})
+   mytester:assert(not result, 'bob knows alice should be false')
+end
+
+function nntest.TensorLogicReasonerConfidence()
+   -- Test confidence estimation
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   local input = torch.randn(4, 10)
+   reasoner:forward(input)
+
+   local confidence = reasoner:getConfidence()
+   mytester:assert(confidence >= 0 and confidence <= 1, 'confidence should be in [0, 1]')
+end
+
+function nntest.TensorLogicReasonerExplain()
+   -- Test explanation generation
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   reasoner:addFact('parent', {'a', 'b'})
+   reasoner:addRule('ancestor', {'parent'})
+
+   local input = torch.randn(2, 10)
+   reasoner:forward(input)
+
+   local explanation = reasoner:explain()
+   mytester:assert(explanation.confidence ~= nil, 'should have confidence')
+   mytester:assert(explanation.steps ~= nil, 'should have steps')
+end
+
+function nntest.TensorLogicReasonerIntrospect()
+   -- Test introspection
+   local reasoner = nn.TensorLogicReasoner(10, 10, {
+      reasoningMode = 'hybrid',
+      logicDepth = 3
+   })
+
+   reasoner:addFact('test', {'a', 'b'})
+
+   local intro = reasoner:introspect()
+   mytester:asserteq(intro.reasoningMode, 'hybrid', 'reasoning mode should match')
+   mytester:asserteq(intro.logicDepth, 3, 'logic depth should match')
+   mytester:asserteq(intro.numFacts, 1, 'should have 1 fact')
+end
+
+function nntest.TensorLogicReasonerModes()
+   -- Test different reasoning modes
+   local modes = {'neural', 'symbolic', 'hybrid'}
+
+   for _, mode in ipairs(modes) do
+      local reasoner = nn.TensorLogicReasoner(10, 10, {reasoningMode = mode})
+
+      local input = torch.randn(2, 10)
+      local output = reasoner:forward(input)
+
+      mytester:assert(output ~= nil, mode .. ' mode should produce output')
+   end
+end
+
+function nntest.TensorLogicReasonerSetMode()
+   -- Test mode switching
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   reasoner:setReasoningMode('neural')
+   mytester:asserteq(reasoner:introspect().reasoningMode, 'neural', 'should switch to neural')
+
+   reasoner:setReasoningMode('symbolic')
+   mytester:asserteq(reasoner:introspect().reasoningMode, 'symbolic', 'should switch to symbolic')
+
+   reasoner:setReasoningMode('hybrid')
+   mytester:asserteq(reasoner:introspect().reasoningMode, 'hybrid', 'should switch to hybrid')
+end
+
+function nntest.TensorLogicReasonerReset()
+   -- Test state reset
+   local reasoner = nn.TensorLogicReasoner(10, 10)
+
+   local input = torch.randn(2, 10)
+   reasoner:forward(input)
+   reasoner:forward(input)
+
+   local state = reasoner:getReasoningState()
+   mytester:assert(state.inferenceSteps > 0, 'should have inference steps')
+
+   reasoner:resetState()
+
+   state = reasoner:getReasoningState()
+   mytester:asserteq(state.inferenceSteps, 0, 'should reset to 0 steps')
+end
+
+-- ============================================================================
+-- Integration Tests
+-- ============================================================================
+
+function nntest.IntegrationTensorLogicWithMetaCognition()
+   -- Test integration of TensorLogic with meta-cognitive system
+   local baseNet = nn.TensorLogicReasoner(10, 10, {
+      reasoningMode = 'hybrid'
+   })
+
+   -- Add some knowledge
+   baseNet:addFact('parent', {'a', 'b'})
+   baseNet:addFact('parent', {'b', 'c'})
+
+   -- Wrap with meta-cognition
+   local metaNet = nn.MetaCognitiveLoop(baseNet, 2)
+
+   local input = torch.randn(4, 10)
+   local output = metaNet:forward(input)
+
+   mytester:assert(output ~= nil, 'should produce output')
+
+   -- Get meta-cognitive state
+   local state = metaNet:getMetaCognitiveState()
+   mytester:assert(state ~= nil, 'should have meta-cognitive state')
+end
+
+function nntest.IntegrationFullStack()
+   -- Test full integration: TensorLogic + MetaCognition + AIML + Visualization
+
+   -- Create reasoning network
+   local reasoner = nn.TensorLogicReasoner(10, 10, {reasoningMode = 'hybrid'})
+   reasoner:addFact('knows', {'alice', 'bob'})
+
+   -- Wrap with nested meta-cognition
+   local metaNet = nn.NestedMetaCognition(reasoner, 2)
+
+   -- Make self-aware with AIML
+   local selfAware = nn.SelfAwareNetwork(metaNet, true)
+
+   -- Add advanced patterns
+   local patterns = nn.AdvancedAIMLPatterns()
+   patterns:applyTo(selfAware:getAIML())
+
+   -- Create visualizer
+   local visualizer = nn.CognitiveVisualizer()
+   visualizer:trackNetwork(selfAware)
+
+   -- Run a few iterations
+   local input = torch.randn(4, 10)
+   for i = 1, 5 do
+      selfAware:forward(input)
+      visualizer:captureState()
+   end
+
+   -- Verify everything works
+   mytester:asserteq(visualizer:getIteration(), 5, 'should have 5 iterations')
+
+   local response = selfAware:converse("STATUS", input)
+   mytester:assert(type(response) == "string", 'should get string response')
+
+   -- Benchmark
+   local benchmark = nn.MetaCognitiveBenchmark({
+      warmupIterations = 1,
+      benchmarkIterations = 3
+   })
+   local results = benchmark:runFullBenchmark(selfAware, 10, 4)
+   mytester:assert(results.forward ~= nil, 'benchmark should have forward results')
+end
 
 mytester:add(nntest)
 

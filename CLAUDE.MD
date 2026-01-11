@@ -34,6 +34,8 @@ nn.aiml/
 - **AdvancedAIMLPatterns.lua**: Extended pattern library with 25+ cognitive patterns (~320 lines)
 - **MetaCognitiveBenchmark.lua**: Benchmarking utilities for performance measurement (~350 lines)
 - **CognitiveVisualizer.lua**: ASCII visualization and data export for cognitive states (~420 lines)
+- **TensorLogic.lua**: Tensor-based logical reasoning (relations, inference, embeddings) (~580 lines)
+- **TensorLogicReasoner.lua**: Neural-symbolic hybrid reasoning module (~320 lines)
 
 ### Standard NN Modules
 The library includes all standard Torch `nn` modules:
@@ -87,7 +89,16 @@ th -lnn -e "nn.test()"
 th -lnn -e "nn.test{'ModuleName'}"
 
 # Run meta-cognitive tests
-th -lnn -e "nn.test{'MetaCognitiveLoop', 'NestedMetaCognition', 'SelfAwareNetwork', 'MetaCognitiveAIML', 'IntegrationMetaCognitive'}"
+th -lnn -e "nn.test{'MetaCognitiveLoop', 'NestedMetaCognition', 'SelfAwareNetwork', 'MetaCognitiveAIML'}"
+
+# Run tensor logic tests
+th -lnn -e "nn.test{'TensorLogic', 'TensorLogicReasoner'}"
+
+# Run new module tests
+th -lnn -e "nn.test{'AdvancedAIMLPatterns', 'MetaCognitiveBenchmark', 'CognitiveVisualizer'}"
+
+# Run integration tests
+th -lnn -e "nn.test{'IntegrationTensorLogicWithMetaCognition', 'IntegrationFullStack'}"
 ```
 
 ### Adding New Modules
@@ -118,7 +129,7 @@ luarocks make rocks/*
 
 ## Current Status
 
-**Phase**: Enhanced Implementation with Benchmark Suite
+**Phase**: Full Neural-Symbolic Integration with Tensor Logic
 
 ### Completed Features
 - Meta-cognitive loop processing
@@ -129,19 +140,22 @@ luarocks make rocks/*
 - **Advanced AIML patterns** (25+ cognitive query patterns)
 - **Benchmarking utilities** (timing, memory, cognitive evolution tracking)
 - **Cognitive visualization** (ASCII plots, dashboards, heatmaps, data export)
+- **Tensor Logic** (symbolic reasoning via tensor operations)
+- **Neural-Symbolic Reasoner** (hybrid neural/symbolic inference)
+- **Exhaustive unit tests** (260+ test functions)
 
 ### Suggested Next Steps
 1. **PyTorch Port**: Port to PyTorch for wider adoption
-2. **GPU Optimization**: Optimize meta-cognitive operations for CUDA
+2. **GPU Optimization**: Optimize tensor logic operations for CUDA
 3. **Interactive Dashboard**: Web-based cognitive state monitoring
-4. **Extended Test Suite**: Add tests for new visualization/benchmark modules
+4. **Extended Knowledge Base**: Pre-built ontologies and rule sets
 
 ## Key Files for Context
 
 | File | Purpose |
 |------|---------|
 | `init.lua` | Package initialization, all requires |
-| `test.lua` | Main test suite (~5400 lines) |
+| `test.lua` | Main test suite (~10000 lines, 260+ tests) |
 | `Module.lua` | Base module class |
 | `Container.lua` | Base container class |
 | `IMPLEMENTATION_SUMMARY.md` | Implementation overview |
@@ -178,6 +192,40 @@ local response = selfAware:converse("HOW ARE YOU", input)
 - `HOW DO YOU THINK` - Architecture description
 - `WHAT IS YOUR CONFIDENCE` - Confidence level
 - `EXPLAIN YOUR REASONING` - Cognitive introspection
+
+### Tensor Logic Usage
+```lua
+-- Create tensor logic engine
+local logic = nn.TensorLogic()
+
+-- Define relations as tensors
+local parent = logic:relation({
+   {'alice', 'bob'},
+   {'bob', 'charlie'}
+}, 'parent')
+
+-- Compute transitive closure (grandparent)
+local ancestor = logic:forwardChain(parent, 5)
+
+-- Query
+local result = logic:query(parent, {'alice', 'bob'})  -- true
+
+-- Logical operations
+local conj = logic:conjunction(rel1, rel2)  -- AND
+local disj = logic:disjunction(rel1, rel2)  -- OR
+local neg = logic:negation(rel)             -- NOT
+
+-- Neural-Symbolic Reasoner
+local reasoner = nn.TensorLogicReasoner(10, 10, {
+   reasoningMode = 'hybrid',  -- 'neural', 'symbolic', or 'hybrid'
+   logicDepth = 3
+})
+reasoner:addFact('parent', {'alice', 'bob'})
+reasoner:addRule('grandparent', {'parent', 'parent'})
+
+local output = reasoner:forward(input)
+local explanation = reasoner:explain()
+```
 
 ## Important Notes
 
