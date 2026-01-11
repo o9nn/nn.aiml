@@ -8,6 +8,8 @@ dist/
 *.dex
 *.apk
 *.aab
+*.kotlin_module
+META-INF/
 
 # IDE files
 .idea/
