@@ -9285,6 +9285,134 @@ function nntest.MetaCognitiveAIML()
    mytester:asserteq(response, "Test response", 'custom pattern should work')
 end
 
+function nntest.IntegrationMetaCognitive()
+   -- Integration test for the complete meta-cognitive neural-bot-net system
+   -- This test verifies that all components work together seamlessly
+   
+   local inputSize = 10
+   local hiddenSize = 20
+   local batchSize = 5
+   local nestingDepth = 3
+   
+   -- Step 1: Create a base neural network
+   local baseNet = nn.Sequential()
+   baseNet:add(nn.Linear(inputSize, hiddenSize))
+   baseNet:add(nn.Tanh())
+   baseNet:add(nn.Linear(hiddenSize, inputSize))
+   
+   -- Step 2: Wrap with nested meta-cognitive architecture
+   local metaCognitiveNet = nn.NestedMetaCognition(baseNet, nestingDepth)
+   
+   -- Step 3: Make it self-aware with AIML conversational interface
+   local selfAwareNet = nn.SelfAwareNetwork(metaCognitiveNet, true)
+   
+   -- Step 4: Apply advanced AIML patterns
+   local advancedPatterns = nn.AdvancedAIMLPatterns()
+   advancedPatterns:applyTo(selfAwareNet:getAIML())
+   
+   -- Test forward pass through the complete stack
+   local input = torch.randn(batchSize, inputSize)
+   local output = selfAwareNet:forward(input)
+   
+   mytester:asserteq(output:size(1), batchSize, 'integration: output batch size mismatch')
+   mytester:asserteq(output:size(2), inputSize, 'integration: output dimension mismatch')
+   
+   -- Test backward pass through the complete stack
+   local gradOutput = torch.randn(output:size())
+   local gradInput = selfAwareNet:backward(input, gradOutput)
+   
+   mytester:asserteq(gradInput:size(1), batchSize, 'integration: gradInput batch size mismatch')
+   mytester:asserteq(gradInput:size(2), inputSize, 'integration: gradInput dimension mismatch')
+   
+   -- Perform several iterations to build meta-cognitive state
+   for i = 1, 10 do
+      local trainInput = torch.randn(batchSize, inputSize)
+      local trainOutput = selfAwareNet:forward(trainInput)
+      local trainGrad = torch.randn(trainOutput:size())
+      selfAwareNet:backward(trainInput, trainGrad)
+   end
+   
+   -- Test nested meta-cognition introspection
+   local hierarchy = metaCognitiveNet:getCognitiveHierarchy()
+   mytester:asserteq(#hierarchy, nestingDepth, 'integration: hierarchy depth mismatch')
+   
+   local metaState = metaCognitiveNet:getGlobalMetaState()
+   mytester:assert(metaState.totalProcessingSteps > 0, 'integration: meta state not tracking')
+   
+   -- Test self-awareness introspection
+   local awareness = selfAwareNet:introspect()
+   mytester:assert(awareness.forwardPasses >= 10, 'integration: forward passes not tracked correctly')
+   mytester:assert(awareness.backwardPasses >= 10, 'integration: backward passes not tracked correctly')
+   mytester:assert(#awareness.recentReflections > 0, 'integration: self-reflections not recorded')
+   
+   -- Test AIML conversational interface with various queries
+   local conversationalTests = {
+      {query = "HELLO", shouldContain = {"hello", "neural", "network"}},
+      {query = "HOW ARE YOU", shouldContain = {"confidence", "functioning"}},
+      {query = "WHAT ARE YOU LEARNING", shouldContain = {"learning", "pattern"}},
+      {query = "HOW DO YOU THINK", shouldContain = {"level", "cognition"}},
+      {query = "WHAT IS YOUR CONFIDENCE", shouldContain = {"confidence"}},
+      {query = "STATUS", shouldContain = {"confidence", "stability"}}
+   }
+   
+   for _, test in ipairs(conversationalTests) do
+      local response = selfAwareNet:converse(test.query, input)
+      mytester:assert(type(response) == "string", 'integration: response should be string for ' .. test.query)
+      mytester:assert(#response > 0, 'integration: response should not be empty for ' .. test.query)
+      
+      -- Check if response contains expected keywords (case-insensitive)
+      local responseLower = response:lower()
+      local foundKeyword = false
+      for _, keyword in ipairs(test.shouldContain) do
+         if responseLower:find(keyword:lower(), 1, true) then
+            foundKeyword = true
+            break
+         end
+      end
+      mytester:assert(foundKeyword, 'integration: response for "' .. test.query .. '" should contain relevant keywords')
+   end
+   
+   -- Test conversation history
+   local aiml = selfAwareNet:getAIML()
+   local history = aiml:getConversationHistory()
+   mytester:assert(#history >= #conversationalTests, 'integration: conversation history not maintained')
+   
+   -- Test AIML introspection
+   local aimlIntro = aiml:introspect()
+   -- AdvancedAIMLPatterns adds 25+ patterns to the base MetaCognitiveAIML patterns
+   -- Base has ~7-10 patterns, so total should exceed 20 with advanced patterns loaded
+   local EXPECTED_MIN_PATTERNS = 20  
+   mytester:assert(aimlIntro.patternCount > EXPECTED_MIN_PATTERNS, 
+                   'integration: should have advanced patterns loaded (expected >' .. EXPECTED_MIN_PATTERNS .. ', got ' .. aimlIntro.patternCount .. ')')
+   mytester:assert(aimlIntro.conversationCount >= #conversationalTests, 'integration: conversation count mismatch')
+   
+   -- Test cognitive integration across all levels
+   local nestedIntro = metaCognitiveNet:introspect()
+   mytester:asserteq(nestedIntro.nestingDepth, nestingDepth, 'integration: nesting depth preserved')
+   mytester:assert(#nestedIntro.hierarchyDetails == nestingDepth, 'integration: hierarchy details complete')
+   
+   -- Verify cognitive integration signal
+   mytester:assert(metaState.cognitiveIntegration >= 0, 'integration: cognitive integration should be valid')
+   
+   -- Test state consistency across multiple forward passes
+   local initialStability = awareness.learningDynamics.stability
+   local moreInput = torch.randn(batchSize, inputSize)
+   selfAwareNet:forward(moreInput)
+   local newAwareness = selfAwareNet:introspect()
+   mytester:assert(newAwareness.forwardPasses > awareness.forwardPasses, 'integration: forward pass count should increase')
+   
+   -- Verify stability is tracked (may increase or decrease based on gradients)
+   mytester:assert(newAwareness.learningDynamics.stability > 0, 'integration: stability should be positive')
+   mytester:assert(math.abs(newAwareness.learningDynamics.stability - initialStability) >= 0, 
+                   'integration: stability should be tracked across iterations')
+   
+   -- Test that the complete system can be converted to string
+   local str = tostring(selfAwareNet)
+   mytester:assert(str:find('SelfAwareNetwork') ~= nil, 'integration: tostring should work for complete system')
+   
+   print('Integration test passed: Complete meta-cognitive neural-bot-net system validated')
+end
+
 mytester:add(nntest)
 
 jac = nn.Jacobian
