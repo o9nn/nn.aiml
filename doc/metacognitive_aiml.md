@@ -252,6 +252,68 @@ This example demonstrates:
 - `setContext(key, value)`: Set conversational context
 - `getConversationHistory()`: Get conversation history
 
+### AdvancedAIMLPatterns
+
+**Constructor:**
+- `nn.AdvancedAIMLPatterns()`
+  - Creates an extended pattern library with 25+ cognitive patterns
+
+**Methods:**
+- `applyTo(aimlInstance)`: Apply all patterns to a MetaCognitiveAIML instance
+- `getPatterns()`: Returns the list of all patterns
+- `getPatternCount()`: Returns number of patterns
+
+**Pattern Categories:**
+- Cognitive State Queries (load, attention, depth, uncertainty)
+- Learning Diagnostics (status, gradients, progress)
+- Performance Analysis (speed, efficiency, resources)
+- Self-Improvement (suggestions, weaknesses, strengths)
+- Cognitive Modeling (emotional state, curiosity, self-awareness)
+- Advanced Meta-Cognitive (nested cognition, architecture)
+
+### MetaCognitiveBenchmark
+
+**Constructor:**
+- `nn.MetaCognitiveBenchmark(options)`
+  - `options.warmupIterations`: Warmup iterations (default: 10)
+  - `options.benchmarkIterations`: Benchmark iterations (default: 100)
+  - `options.verbose`: Enable verbose output (default: false)
+
+**Methods:**
+- `timeForward(network, input, iterations)`: Measure forward pass timing
+- `timeBackward(network, input, iterations)`: Measure backward pass timing
+- `measureMemory(network, input)`: Measure memory usage
+- `measureCognitiveOverhead(baseNetwork, metaNetwork, input)`: Compare overhead
+- `trackCognitiveEvolution(network, input, iterations)`: Track cognitive state changes
+- `runFullBenchmark(network, inputSize, batchSize)`: Run comprehensive benchmark
+- `compareBenchmarks(baseNetwork, metaNetwork, inputSize, batchSize)`: Compare networks
+- `printReport(results)`: Print formatted benchmark report
+- `exportResults(results, format)`: Export results (table, summary, csv)
+
+### CognitiveVisualizer
+
+**Constructor:**
+- `nn.CognitiveVisualizer(options)`
+  - `options.width`: Plot width in characters (default: 60)
+  - `options.height`: Plot height in lines (default: 15)
+  - `options.maxHistory`: Maximum data points to store (default: 200)
+
+**Methods:**
+- `trackNetwork(network)`: Set network to track
+- `captureState()`: Capture current cognitive state
+- `plotConfidence()`: ASCII plot of confidence timeline
+- `plotCognitiveSignal()`: ASCII plot of cognitive signal
+- `plotStability()`: ASCII plot of learning stability
+- `plotConvergence()`: ASCII plot of convergence
+- `plotAll()`: Plot all metrics
+- `showCognitiveHeatmap()`: ASCII heatmap visualization
+- `showDashboard()`: Compact dashboard with sparklines
+- `getStatistics()`: Get computed statistics for all metrics
+- `printStatistics()`: Print formatted statistics table
+- `exportJSON(filepath)`: Export timeline data as JSON
+- `exportCSV(filepath)`: Export timeline data as CSV
+- `getTimeline()`: Get raw timeline data
+
 ## Benefits Over Traditional LLMs
 
 1. **True Meta-Cognition**: Unlike LLMs that simulate reasoning, NN.AIML implements actual nested cognitive loops that monitor and adapt learning processes.
@@ -309,6 +371,80 @@ local enhanced = nn.NestedMetaCognition(existingNet, 3)
 local fullyAware = nn.SelfAwareNetwork(enhanced, true)
 
 -- Now you have a meta-cognitive, self-aware, conversational neural network!
+```
+
+### Using Advanced AIML Patterns
+
+```lua
+-- Create a self-aware network
+local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+
+-- Load advanced pattern library
+local advancedPatterns = nn.AdvancedAIMLPatterns()
+
+-- Apply to the network's AIML interface
+advancedPatterns:applyTo(network:getAIML())
+
+-- Now you can use many more conversational queries
+print(network:converse("STATUS", input))
+print(network:converse("WHAT IS YOUR COGNITIVE LOAD", input))
+print(network:converse("HOW CAN YOU IMPROVE", input))
+print(network:converse("DESCRIBE YOUR ARCHITECTURE", input))
+```
+
+### Benchmarking Meta-Cognitive Networks
+
+```lua
+-- Create networks
+local baseNet = nn.Sequential()
+   :add(nn.Linear(10, 20))
+   :add(nn.Tanh())
+   :add(nn.Linear(20, 10))
+
+local metaNet = nn.NestedMetaCognition(baseNet:clone(), 3)
+
+-- Create benchmark utility
+local benchmark = nn.MetaCognitiveBenchmark({verbose = true})
+
+-- Compare performance
+local results = benchmark:compareBenchmarks(baseNet, metaNet, 10, 32)
+benchmark:printReport(results.meta)
+
+-- Track cognitive evolution during training
+local evolution = benchmark:trackCognitiveEvolution(metaNet, torch.randn(32, 10), 100)
+print("Avg Stability: " .. evolution.stats.stability.mean)
+```
+
+### Visualizing Cognitive State Evolution
+
+```lua
+-- Create and configure visualizer
+local visualizer = nn.CognitiveVisualizer({
+   width = 50,
+   height = 10,
+   maxHistory = 100
+})
+
+-- Track a self-aware network
+local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+visualizer:trackNetwork(network)
+
+-- During training, capture state after each iteration
+for i = 1, 50 do
+   local output = network:forward(input)
+   network:backward(input, gradOutput)
+   visualizer:captureState()  -- Capture cognitive state
+end
+
+-- Show various visualizations
+print(visualizer:showDashboard())    -- Compact dashboard with sparklines
+print(visualizer:plotConfidence())   -- ASCII line plot
+print(visualizer:showCognitiveHeatmap())  -- Heatmap view
+print(visualizer:printStatistics())  -- Statistics table
+
+-- Export data for external tools
+visualizer:exportJSON("cognitive_data.json")
+visualizer:exportCSV("cognitive_data.csv")
 ```
 
 ## Citation
