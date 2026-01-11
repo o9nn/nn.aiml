@@ -61,16 +61,18 @@ print("Learning stability: " .. intro.learningDynamics.stability)
 print("Current state: " .. intro.recentReflections[1].state)
 ```
 
-### Why NN.AIML Transcends Traditional LLMs
+### Why NN.AIML Differs from Traditional LLMs
 
-1. **True Meta-Cognitive Loops**: Unlike LLMs that simulate reasoning through token prediction, NN.AIML implements actual nested cognitive loops that monitor and adapt learning in real-time.
+1. **Explicit Meta-Cognitive Loops**: NN.AIML implements explicit nested cognitive loops that monitor and adapt learning in real-time, providing measurable confidence and stability metrics. LLMs simulate reasoning through token prediction without explicit self-monitoring mechanisms.
 
-2. **Lightweight & Efficient**: Built on Torch with ~10-20% overhead per cognitive level, compared to massive transformer models requiring billions of parameters.
+2. **Lightweight & Efficient**: Built on Torch with estimated 10-20% computational overhead per cognitive level (based on additional forward/backward passes), compared to massive transformer models requiring billions of parameters. Actual overhead depends on base network size and cognitive depth.
 
-3. **Transparent Self-Awareness**: Full introspection into cognitive state, confidence levels, and reasoning processes - not black-box predictions.
+3. **Transparent Self-Awareness**: Full introspection into cognitive state, confidence levels, and reasoning processes through explicit APIs. Unlike black-box neural models, every aspect of cognitive state is directly measurable and accessible.
 
-4. **Adaptive Learning**: Self-adjusting learning rates and stability based on meta-cognitive awareness, enabling continuous self-improvement.
+4. **Adaptive Learning**: Self-adjusting learning rates and stability based on tracked meta-cognitive metrics, enabling continuous self-improvement during training. Traditional models require manual hyperparameter tuning or separate meta-learning systems.
 
-5. **Hybrid Neural-Symbolic**: Combines neural network processing with AIML pattern-based reasoning for robust conversational AI.
+5. **Hybrid Neural-Symbolic**: Combines neural network processing with AIML pattern-based reasoning for robust conversational AI. This hybrid approach leverages both statistical learning and symbolic rule-based systems.
+
+*Note: Performance characteristics vary based on network architecture, cognitive depth, and use case. See [benchmarking documentation](doc/metacognitive_aiml.md#benchmarking) for measurement methodologies.*
 
 See [examples/metacognitive_botnet.lua](examples/metacognitive_botnet.lua) for a complete demonstration.

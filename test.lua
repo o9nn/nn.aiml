@@ -9379,7 +9379,8 @@ function nntest.IntegrationMetaCognitive()
    
    -- Test AIML introspection
    local aimlIntro = aiml:introspect()
-   mytester:assert(aimlIntro.patternCount > 20, 'integration: should have advanced patterns loaded')
+   local EXPECTED_MIN_PATTERNS = 20  -- Advanced patterns library adds 25+ patterns to base patterns
+   mytester:assert(aimlIntro.patternCount > EXPECTED_MIN_PATTERNS, 'integration: should have advanced patterns loaded')
    mytester:assert(aimlIntro.conversationCount >= #conversationalTests, 'integration: conversation count mismatch')
    
    -- Test cognitive integration across all levels
