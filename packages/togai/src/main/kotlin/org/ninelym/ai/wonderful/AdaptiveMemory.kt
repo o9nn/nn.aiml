@@ -79,16 +79,6 @@ data class PersonalKnowledge(
     fun daysSinceMet(): Long {
         return ChronoUnit.DAYS.between(firstMet, LocalDateTime.now())
     }
-    
-    /**
-     * Update last interaction time
-     */
-    fun recordInteraction() {
-        (this as PersonalKnowledge).copy(
-            totalInteractions = totalInteractions + 1,
-            lastInteraction = LocalDateTime.now()
-        )
-    }
 }
 
 /**
