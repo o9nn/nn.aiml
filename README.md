@@ -65,7 +65,7 @@ print("Current state: " .. intro.recentReflections[1].state)
 
 1. **Explicit Meta-Cognitive Loops**: NN.AIML implements explicit nested cognitive loops that monitor and adapt learning in real-time, providing measurable confidence and stability metrics. LLMs simulate reasoning through token prediction without explicit self-monitoring mechanisms.
 
-2. **Lightweight & Efficient**: Built on Torch with estimated 10-20% computational overhead per cognitive level (based on additional forward/backward passes), compared to massive transformer models requiring billions of parameters. Actual overhead depends on base network size and cognitive depth.
+2. **Lightweight & Efficient**: Built on Torch with estimated 10-20% computational overhead per cognitive level (based on implementation analysis of additional forward/backward passes). Actual overhead depends on base network size and cognitive depth. Compare to massive transformer models requiring billions of parameters. See [benchmarking documentation](doc/metacognitive_aiml.md#benchmarking) for measurement methodologies to verify performance on your specific use case.
 
 3. **Transparent Self-Awareness**: Full introspection into cognitive state, confidence levels, and reasoning processes through explicit APIs. Unlike black-box neural models, every aspect of cognitive state is directly measurable and accessible.
 

@@ -110,11 +110,11 @@ local hierarchy = nestedNet:getCognitiveHierarchy()
 
 **Neural-Bot-Net**:
 - Any size base network (10K - 10M parameters)
-- **Estimated 10-20% computational overhead per cognitive level** (additional forward/backward passes, based on meta-cognitive loop implementation)
+- **Estimated 10-20% computational overhead per cognitive level** (theoretical estimate based on implementation analysis: additional forward/backward passes for cognitive signal computation)
 - Real-time inference possible
 - Can run on single GPU or CPU
 
-*Note*: Actual overhead depends on base network complexity, cognitive depth, and implementation details. The 10-20% estimate is based on the cost of additional tensor operations for cognitive signal computation and state tracking. See MetaCognitiveBenchmark module for measurement tools.
+*Note*: This overhead estimate is based on theoretical analysis of the additional tensor operations required for meta-cognitive processing. Actual measured overhead depends on base network complexity, cognitive depth, hardware, and implementation details. Use the MetaCognitiveBenchmark module (see "Benchmarking Performance" section below) to measure actual performance on your specific configuration.
 
 ### 3. Transparent Awareness
 
