@@ -84,7 +84,7 @@ data class PersonalKnowledge(
      * Update last interaction time
      */
     fun recordInteraction() {
-        (this as PersonalKnowledge).copy(
+        this.copy(
             totalInteractions = totalInteractions + 1,
             lastInteraction = LocalDateTime.now()
         )
