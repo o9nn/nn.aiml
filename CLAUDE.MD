@@ -33,6 +33,7 @@ nn.aiml/
 - **MetaCognitiveAIML.lua**: Pattern-based conversational AI (~292 lines)
 - **AdvancedAIMLPatterns.lua**: Extended pattern library with 25+ cognitive patterns (~320 lines)
 - **MetaCognitiveBenchmark.lua**: Benchmarking utilities for performance measurement (~350 lines)
+- **CognitiveVisualizer.lua**: ASCII visualization and data export for cognitive states (~420 lines)
 
 ### Standard NN Modules
 The library includes all standard Torch `nn` modules:
@@ -127,12 +128,13 @@ luarocks make rocks/*
 - Comprehensive testing and documentation
 - **Advanced AIML patterns** (25+ cognitive query patterns)
 - **Benchmarking utilities** (timing, memory, cognitive evolution tracking)
+- **Cognitive visualization** (ASCII plots, dashboards, heatmaps, data export)
 
 ### Suggested Next Steps
 1. **PyTorch Port**: Port to PyTorch for wider adoption
-2. **Visualization Tools**: Cognitive state evolution visualization
-3. **GPU Optimization**: Optimize meta-cognitive operations for CUDA
-4. **Interactive Dashboard**: Web-based cognitive state monitoring
+2. **GPU Optimization**: Optimize meta-cognitive operations for CUDA
+3. **Interactive Dashboard**: Web-based cognitive state monitoring
+4. **Extended Test Suite**: Add tests for new visualization/benchmark modules
 
 ## Key Files for Context
 

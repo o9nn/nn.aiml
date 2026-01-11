@@ -290,6 +290,30 @@ This example demonstrates:
 - `printReport(results)`: Print formatted benchmark report
 - `exportResults(results, format)`: Export results (table, summary, csv)
 
+### CognitiveVisualizer
+
+**Constructor:**
+- `nn.CognitiveVisualizer(options)`
+  - `options.width`: Plot width in characters (default: 60)
+  - `options.height`: Plot height in lines (default: 15)
+  - `options.maxHistory`: Maximum data points to store (default: 200)
+
+**Methods:**
+- `trackNetwork(network)`: Set network to track
+- `captureState()`: Capture current cognitive state
+- `plotConfidence()`: ASCII plot of confidence timeline
+- `plotCognitiveSignal()`: ASCII plot of cognitive signal
+- `plotStability()`: ASCII plot of learning stability
+- `plotConvergence()`: ASCII plot of convergence
+- `plotAll()`: Plot all metrics
+- `showCognitiveHeatmap()`: ASCII heatmap visualization
+- `showDashboard()`: Compact dashboard with sparklines
+- `getStatistics()`: Get computed statistics for all metrics
+- `printStatistics()`: Print formatted statistics table
+- `exportJSON(filepath)`: Export timeline data as JSON
+- `exportCSV(filepath)`: Export timeline data as CSV
+- `getTimeline()`: Get raw timeline data
+
 ## Benefits Over Traditional LLMs
 
 1. **True Meta-Cognition**: Unlike LLMs that simulate reasoning, NN.AIML implements actual nested cognitive loops that monitor and adapt learning processes.
@@ -389,6 +413,38 @@ benchmark:printReport(results.meta)
 -- Track cognitive evolution during training
 local evolution = benchmark:trackCognitiveEvolution(metaNet, torch.randn(32, 10), 100)
 print("Avg Stability: " .. evolution.stats.stability.mean)
+```
+
+### Visualizing Cognitive State Evolution
+
+```lua
+-- Create and configure visualizer
+local visualizer = nn.CognitiveVisualizer({
+   width = 50,
+   height = 10,
+   maxHistory = 100
+})
+
+-- Track a self-aware network
+local network = nn.SelfAwareNetwork(nn.Linear(10, 10), true)
+visualizer:trackNetwork(network)
+
+-- During training, capture state after each iteration
+for i = 1, 50 do
+   local output = network:forward(input)
+   network:backward(input, gradOutput)
+   visualizer:captureState()  -- Capture cognitive state
+end
+
+-- Show various visualizations
+print(visualizer:showDashboard())    -- Compact dashboard with sparklines
+print(visualizer:plotConfidence())   -- ASCII line plot
+print(visualizer:showCognitiveHeatmap())  -- Heatmap view
+print(visualizer:printStatistics())  -- Statistics table
+
+-- Export data for external tools
+visualizer:exportJSON("cognitive_data.json")
+visualizer:exportCSV("cognitive_data.csv")
 ```
 
 ## Citation
