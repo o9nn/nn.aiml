@@ -6,6 +6,8 @@ markdown_extensions: [extra]
 docs_dir : doc
 pages:
 - [index.md, Home]
+- [agml.md, AGML Integration]
+- [packages.md, Integrated Packages]
 - [module.md, Modules, Module Interface]
 - [containers.md, Modules, Containers]
 - [transfer.md, Modules, Transfer Functions]

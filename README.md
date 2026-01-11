@@ -20,6 +20,10 @@ This package provides an easy and modular way to build and train simple or compl
    * [`NestedMetaCognition`](doc/metacognitive_aiml.md#nestedmetacognition): Hierarchical meta-cognitive processing (learning about learning, reasoning about reasoning)
    * [`SelfAwareNetwork`](doc/metacognitive_aiml.md#selfawarenetwork): Self-monitoring neural networks with AIML conversational interface
    * [`MetaCognitiveAIML`](doc/metacognitive_aiml.md#metacognitiveaiml): AIML pattern-based conversational AI with neural awareness
+ * **AGML - Advanced Generative Markup Language** (NEW):
+   * [AGML Documentation](agml/README.md): Advanced AIML-based conversational AI with nested meta-cognitive loops.
+ * **Integrated Packages** (NEW):
+   * [Packages Documentation](packages/README.md): A collection of integrated external packages.
  * Additional documentation:
    * [Overview](doc/overview.md#nn.overview.dok) of the package essentials including modules, containers and training;
    * [Training](doc/training.md#nn.traningneuralnet.dok): how to train a neural network using [`StochasticGradient`](doc/training.md#nn.StochasticGradient);
