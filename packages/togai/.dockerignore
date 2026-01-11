@@ -1,0 +1,79 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Documentation
+docs/_build/
+docs/.build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Data
+data/
+
+# CI/CD
+.github/
+
+# Development
+*.md
+!README.md
+LICENSE
+CONTRIBUTING.md
+CHANGELOG.md
+UPGRADE_SUMMARY.md
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Archives
+archive/
+ref/
+src/
+app/
+gradle/

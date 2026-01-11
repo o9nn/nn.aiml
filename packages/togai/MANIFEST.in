@@ -1,0 +1,41 @@
+# Include documentation
+include README.md
+include CHANGELOG.md
+include CONTRIBUTING.md
+include LICENSE
+include UPGRADE_SUMMARY.md
+
+# Include configuration files
+include pyproject.toml
+include setup.py
+include requirements.txt
+
+# Include tests
+recursive-include tests *.py
+
+# Include examples
+recursive-include python/examples *.py
+
+# Exclude unnecessary files
+exclude .gitignore
+exclude .dockerignore
+exclude Dockerfile
+exclude docker-compose.yml
+
+# Exclude build artifacts
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *.so
+global-exclude .DS_Store
+global-exclude *.swp
+global-exclude *.swo
+
+# Exclude development files
+prune .github
+prune .git
+prune docs/_build
+prune archive
+prune ref
+prune src
+prune app
+prune gradle

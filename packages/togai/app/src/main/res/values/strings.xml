@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Togai</string>
+    <string name="app_description">Advanced Android AI Assistant with Multimodal Capabilities</string>
+    <string name="memory_status">Memory Status</string>
+    <string name="native_libraries">Native Libraries</string>
+    <string name="ai_capabilities">AI Capabilities</string>
+    <string name="test_system">Test AI System</string>
+    <string name="processing">Processing...</string>
+</resources>

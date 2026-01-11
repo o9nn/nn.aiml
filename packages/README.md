@@ -18,6 +18,7 @@ This directory contains integrated external packages that extend nn.aiml's capab
 | **gnucash-on-windows** | GnuCash Windows build system and dependencies | Build Tools |
 | **azure-powershell** | Azure PowerShell modules and cmdlets | Cloud Integration |
 | **nupkg** | NuGet packages (Microsoft Graph, AI, Gallery Modules) | .NET Packages |
+| **togai** | Android AI assistant with LLaMA, Stable Diffusion, Live2D characters | Android AI |
 
 ## Package Details
 
@@ -93,6 +94,20 @@ Azure PowerShell modules:
 - 200+ service modules
 - Docker deployment support
 - Comprehensive documentation
+
+### Android AI Applications
+
+#### togai (9mly)
+Sophisticated Android AI assistant application featuring:
+- LLaMA.cpp language models with real-time inference
+- Stable Diffusion local text-to-image generation
+- Live2D Cubism character avatars (Himiko Toga)
+- Causal reasoning engine with Pearl's causal hierarchy
+- Voice input/output with 10+ languages
+- Vector database (LVDB) for AI memory
+- Planetary Neural Network architecture
+- **Build**: `./gradlew assembleDebug`
+- **Platform**: Android SDK with Kotlin
 
 ### .NET Packages (nupkg)
 
